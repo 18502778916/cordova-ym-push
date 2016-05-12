@@ -41,10 +41,15 @@ var app = {
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
         var success = function (success) {//成功回调函数
-      // alert(success);
-       navigator.ympushResult.ympushResult(success);
+       alert(success);
+
         };
-        navigator.ympush.ympush(["570f0f3b67e58e7e2b0014dd","e0e510b10e2e3d854b0a9cd810515e3b"],1,success);
+//         var drivertoken = function (drivertoken) {//成功回调函数
+//               alert(drivertoken);
+//
+//                };
+//navigator.drivertoken.drivertoken(drivertoken);
+        navigator.ympush.ympush(["570f0f3b67e58e7e2b0014dd","e0e510b10e2e3d854b0a9cd810515e3b"],success);
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');

@@ -15,6 +15,7 @@ import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.UmengRegistrar;
 import com.umeng.message.entity.UMessage;
 
 import org.apache.cordova.CallbackContext;
@@ -39,35 +40,47 @@ public class YmPushPlugin extends CordovaPlugin {
     List<String> ymKey=new ArrayList<String>();
 
 
+
+
+
     @Override
     public boolean execute(String action, final JSONArray args, CallbackContext callbackContext) throws JSONException {
         this.callbackContext=callbackContext;
         cordovaInterface=this.cordova;
         mPushAgent = PushAgent.getInstance(cordovaInterface.getActivity());
         if ("ympush".equals(action)){
-            Log.e("x",""+args.get(1));
-            if(args!=null){
-                JSONArray jsonArray=args.getJSONArray(0);
-                for(int i=0;i<jsonArray.length();i++){
-                    Log.e("x", "" + jsonArray.get(i));
-                    ymKey.add(jsonArray.getString(i));
+                if(args!=null){
+                    JSONArray jsonArray=args.getJSONArray(0);
+                    for(int i=0;i<jsonArray.length();i++){
+                        Log.e("x", "" + jsonArray.get(i));
+                        ymKey.add(jsonArray.getString(i));
+                    }
+                    mPushAgent.setAppkeyAndSecret(ymKey.get(0), ymKey.get(1));
                 }
-                mPushAgent.setAppkeyAndSecret(ymKey.get(0), ymKey.get(1));
-            }
-            cordova.getThreadPool().execute(new Runnable() {
-                @Override
-                public void run() {
-                    Log.e("x", "zl");
-                    printKeyValue();
-                    ymPush();
-                }
-            });
+                cordova.getThreadPool().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e("x", "zl");
+                        printKeyValue();
+                        ymPush();
+                        getDeviceToken();
+                    }
+                });
+
 
             return true;
         }
         else {
             return false;
         }
+    }
+
+    public void getDeviceToken(){
+        String device_token = UmengRegistrar.getRegistrationId(cordovaInterface.getActivity());
+        PluginResult mPlugin = new PluginResult(PluginResult.Status.OK,
+                "{\""+"device_token\""+":"+"\""+device_token+"\"}");
+        mPlugin.setKeepCallback(true);
+        callbackContext.sendPluginResult(mPlugin);
     }
 
     public void ymPush(){
@@ -196,7 +209,7 @@ public class YmPushPlugin extends CordovaPlugin {
                     }
                     Log.e("xxx", "z");
                     PluginResult mPlugin = new PluginResult(PluginResult.Status.OK,
-                            msg.custom);
+                            "{\""+"msg\""+":"+"\""+msg.custom+"\"}");
                     mPlugin.setKeepCallback(true);
                     callbackContext.sendPluginResult(mPlugin);
                     Toast.makeText(context, msg.custom, Toast.LENGTH_LONG).show();

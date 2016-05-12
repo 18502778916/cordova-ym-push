@@ -8,9 +8,7 @@
     <feature name="ympush">
         <param name="android-package" value="org.apache.cordova.ympush.YmPushPlugin" />
     </feature>
-    <feature name="ympushResult">
-        <param name="android-package" value="org.apache.cordova.ympush.YmPushResult" />
-    </feature>
+
 
     <allow-intent href="market:*" />
     <name>Cordova-ym-push</name>

@@ -10,13 +10,7 @@ module.exports = [
                       "clobbers":[
                       "navigator.ympush"
                       ]
-                  },{
-                                          "file":"plugins/cordova-plugin-ympush/ympushResult.js",
-                                          "id":"org.apache.cordova.ympush.YmPushResult",
-                                          "clobbers":[
-                                          "navigator.ympushResult"
-                                          ]
-                                      }
+                  }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
